@@ -367,7 +367,7 @@ ai:
 
   api_key: "cbe379bdc8414640a8b4a9408ed26c9c.fdAJ3d7BNBBDhCDb"                       # API Key（建议使用环境变量 AI_API_KEY）
   
-  api_base: ""                      # 自定义 API 地址（可选，绝大多数情况留空即可）
+  api_base: "https://open.bigmodel.cn/api/paas/v4"                      # 自定义 API 地址（可选，绝大多数情况留空即可）
                                     #
                                     # ❓ 什么时候需要填？
                                     #    当你使用的 AI 服务商不在上方支持列表中时。
