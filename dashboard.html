@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>TrendRadar 舆情数据看板</title>
+    <!-- 引入 ECharts 和 PapaParse (用于解析CSV) -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <style>
+        body { font-family: "Microsoft YaHei", sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .header { text-align: center; color: #2c3e50; margin-bottom: 30px; }
+        .dashboard { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 20px; }
+        .chart-box { background: #fff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); width: 45%; height: 400px; padding: 15px; }
+        @media (max-width: 768px) { .chart-box { width: 100%; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 今日热榜数据看板</h1>
+        <p>数据来源：data.csv 实时生成</p>
+    </div>
+    <div class="dashboard">
+        <div id="platformChart" class="chart-box"></div>
+        <div id="rankChart" class="chart-box"></div>
+    </div>
+
+    <script>
+        // 读取同目录下的 data.csv
+        Papa.parse("data.csv", {
+            download: true,
+            header: true,
+            complete: function(results) {
+                const data = results.data;
+                
+                // 1. 统计各平台新闻数量
+                const platformCount = {};
+                // 2. 统计排名分布（前1-5名，6-10名等）
+                const rankDist = { '1-5名': 0, '6-10名': 0, '10名以后': 0 };
+
+                data.forEach(row => {
+                    if(row.title) {
+                        // 统计平台
+                        const p = row.platform_id || '未知';
+                        platformCount[p] = (platformCount[p] || 0) + 1;
+                        
+                        // 统计排名
+                        const r = parseInt(row.rank);
+                        if(r >= 1 && r <= 5) rankDist['1-5名']++;
+                        else if(r >= 6 && r <= 10) rankDist['6-10名']++;
+                        else rankDist['10名以后']++;
+                    }
+                });
+
+                // 渲染平台数量柱状图
+                const chart1 = echarts.init(document.getElementById('platformChart'));
+                chart1.setOption({
+                    title: { text: '各平台新闻抓取数量', left: 'center' },
+                    tooltip: { trigger: 'axis' },
+                    xAxis: { type: 'category', data: Object.keys(platformCount) },
+                    yAxis: { type: 'value' },
+                    series: [{ data: Object.values(platformCount), type: 'bar', itemStyle: { color: '#3498db' } }]
+                });
+
+                // 渲染排名分布饼图
+                const chart2 = echarts.init(document.getElementById('rankChart'));
+                chart2.setOption({
+                    title: { text: '新闻排名分布', left: 'center' },
+                    tooltip: { trigger: 'item' },
+                    series: [{
+                        type: 'pie',
+                        radius: '50%',
+                        data: [
+                            { value: rankDist['1-5名'], name: '1-5名', itemStyle: { color: '#e74c3c' } },
+                            { value: rankDist['6-10名'], name: '6-10名', itemStyle: { color: '#f39c12' } },
+                            { value: rankDist['10名以后'], name: '10名以后', itemStyle: { color: '#2ecc71' } }
+                        ]
+                    }]
+                });
+            }
+        });
+    </script>
+</body>
+</html>
