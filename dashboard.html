@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>鐑偣鑸嗘儏鐪嬫澘</title>
+<title>热点舆情看板</title>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
@@ -112,24 +112,24 @@
 <div class="wrap">
 
   <header class="hd">
-    <h1>鐑偣鑸嗘儏鐪嬫澘</h1>
-    <p class="sub" id="meta">姝ｅ湪璇诲彇 data.csv 鈥�</p>
+    <h1>热点舆情看板</h1>
+    <p class="sub" id="meta">正在读取 data.csv …</p>
   </header>
 
   <section class="card">
     <div class="card-hd">
-      <h2>鍏ㄧ綉鐑偣 TOP 10</h2>
-      <span class="hint">璺ㄥ钩鍙拌仛鍚� 路 姒滀綅瓒婂墠銆佽鐩栧钩鍙拌秺澶氾紝鐑害瓒婇珮</span>
+      <h2>全网热点 TOP 10</h2>
+      <span class="hint">跨平台聚合 · 榜位越前、覆盖平台越多，热度越高</span>
     </div>
     <div class="tbl-wrap">
       <table>
         <thead>
           <tr>
             <th class="rk">#</th>
-            <th>浜嬩欢</th>
-            <th style="width:150px">骞冲彴瑕嗙洊</th>
-            <th style="width:80px">鏈€楂樻浣�</th>
-            <th style="width:150px">鐑害</th>
+            <th>事件</th>
+            <th style="width:150px">平台覆盖</th>
+            <th style="width:80px">最高榜位</th>
+            <th style="width:150px">热度</th>
           </tr>
         </thead>
         <tbody id="topBody"></tbody>
@@ -139,20 +139,20 @@
 
   <section class="card">
     <div class="card-hd">
-      <h2>璐熼潰鐑偣</h2>
-      <span class="hint" id="negHint">鍛戒腑椋庨櫓璇嶇殑浜嬩欢 路 鎸夌儹搴︽帓搴忥紝绛夌骇鍙栦簨浠跺唴鏈€楂�</span>
+      <h2>负面热点</h2>
+      <span class="hint" id="negHint">命中风险词的事件 · 按热度排序，等级取事件内最高</span>
     </div>
     <div class="tbl-wrap">
       <table>
         <thead>
           <tr>
             <th class="rk">#</th>
-            <th>浜嬩欢</th>
-            <th style="width:66px">绛夌骇</th>
-            <th style="width:200px">鍛戒腑璇�</th>
-            <th style="width:150px">骞冲彴</th>
-            <th style="width:66px">姒滀綅</th>
-            <th style="width:64px">鐑害</th>
+            <th>事件</th>
+            <th style="width:66px">等级</th>
+            <th style="width:200px">命中词</th>
+            <th style="width:150px">平台</th>
+            <th style="width:66px">榜位</th>
+            <th style="width:64px">热度</th>
           </tr>
         </thead>
         <tbody id="negBody"></tbody>
@@ -162,56 +162,56 @@
 
   <section class="card">
     <div class="card-hd">
-      <h2>璺ㄥ钩鍙板叡鎸�</h2>
-      <span class="hint">鍚屼竴浜嬩欢鍦� 2 涓強浠ヤ笂骞冲彴鍚屾椂涓婃 鈥斺€� 杩欐墠鏄湡姝ｇ殑鍏ㄧ綉鐑偣</span>
+      <h2>跨平台共振</h2>
+      <span class="hint">同一事件在 2 个及以上平台同时上榜 —— 这才是真正的全网热点</span>
     </div>
     <div class="res-list" id="resList"></div>
   </section>
 
   <section class="card">
     <div class="card-hd">
-      <h2>鍚勫钩鍙扮儹姒� TOP 5</h2>
-      <span class="hint">鍒嗗钩鍙拌瑙掞紝鐪嬪悇鑷湪鎺ㄤ粈涔�</span>
+      <h2>各平台热榜 TOP 5</h2>
+      <span class="hint">分平台视角，看各自在推什么</span>
     </div>
     <div class="pb-grid" id="pbGrid"></div>
   </section>
 
   <section class="charts">
     <div class="card" style="margin-bottom:0">
-      <div class="card-hd"><h2>楂橀鐑瘝</h2><span class="hint">璺ㄦ爣棰橀噸澶嶅嚭鐜扮殑瀹炰綋</span></div>
+      <div class="card-hd"><h2>高频热词</h2><span class="hint">跨标题重复出现的实体</span></div>
       <div class="chart" id="wordChart"></div>
     </div>
     <div class="card" style="margin-bottom:0">
-      <div class="card-hd"><h2>骞冲彴鍒嗗竷</h2><span class="hint">鍚勫钩鍙板湪姒滄潯鏁�</span></div>
+      <div class="card-hd"><h2>平台分布</h2><span class="hint">各平台在榜条数</span></div>
       <div class="chart" id="platChart"></div>
     </div>
   </section>
 
   <p class="foot">
-    鏁版嵁婧� <code>data.csv</code> 路 姣忔棩鐢� GitHub Actions 鑷姩鎶撳彇鏇存柊<br>
-    鐑害 = 危(31 鈭� 姒滀綅) 脳 骞冲彴鏉冮噸锛岃法骞冲彴鎸夎鐩栨暟鍔犳潈<br>
-    銆岃礋闈€€嶆爣璁颁负鍛戒腑椋庨櫓璇嶈〃鐨勬彁绀猴紝渚涘揩閫熸壂璇伙紝涓嶇瓑鍚屼簬鎯呮劅鍒ゅ畾
+    数据源 <code>data.csv</code> · 每日由 GitHub Actions 自动抓取更新<br>
+    热度 = Σ(31 − 榜位) × 平台权重，跨平台按覆盖数加权<br>
+    「负面」标记为命中风险词表的提示，供快速扫读，不等同于情感判定
   </p>
 </div>
 
 <script>
 const PLAT = {
-  'toutiao':            { name: '浠婃棩澶存潯',   w: 1.00 },
-  'baidu':              { name: '鐧惧害鐑悳',   w: 1.00 },
-  'thepaper':           { name: '婢庢箖鏂伴椈',   w: 1.15 },
-  'wallstreetcn-hot':   { name: '鍗庡皵琛楄闂�', w: 1.05 },
-  'bilibili-hot-search':{ name: 'B绔欑儹鎼�',    w: 0.90 },
-  'weibo':              { name: '寰崥鐑悳',   w: 1.10 },
-  'douyin':             { name: '鎶栭煶鐑',   w: 1.00 },
-  'zhihu':              { name: '鐭ヤ箮鐑',   w: 0.95 },
-  'cls-hot':            { name: '璐㈣仈绀�',     w: 1.05 },
-  'ifeng':              { name: '鍑ゅ嚢缃�',     w: 1.00 },
-  'tieba':              { name: '璐村惂',       w: 0.85 }
+  'toutiao':            { name: '今日头条',   w: 1.00 },
+  'baidu':              { name: '百度热搜',   w: 1.00 },
+  'thepaper':           { name: '澎湃新闻',   w: 1.15 },
+  'wallstreetcn-hot':   { name: '华尔街见闻', w: 1.05 },
+  'bilibili-hot-search':{ name: 'B站热搜',    w: 0.90 },
+  'weibo':              { name: '微博热搜',   w: 1.10 },
+  'douyin':             { name: '抖音热榜',   w: 1.00 },
+  'zhihu':              { name: '知乎热榜',   w: 0.95 },
+  'cls-hot':            { name: '财联社',     w: 1.05 },
+  'ifeng':              { name: '凤凰网',     w: 1.00 },
+  'tieba':              { name: '贴吧',       w: 0.85 }
 };
-const STOP = ['鍦ㄤ腑鍥�','鎴戜滑','浠栦滑','杩欎釜','閭ｄ釜','浠€涔�','鎬庝箞','涓轰粈涔�','濡備綍','鍙互','宸茬粡',
-  '涓嶆槸','娌℃湁','涓€涓�','杩欎簺','閭ｄ簺','灏辨槸','杩樻槸','浣嗘槸','鍥犱负','鎵€浠�','濡傛灉','铏界劧','鑰屼笖',
-  '浠ュ強','鎴栬€�','涓嶈繃','鐒跺悗','鐜板湪','浠婂ぉ','鏄ㄥぉ','鏄庡ぉ','鎴戝浗','鍏朵腑','浠ヤ笂','浠ヤ笅',
-  '杩欎箞','閭ｄ箞','涓€浜�','涓€涓�','涓€鐩�','姝ｅ湪','琛ㄧず','杩涜','閫氳繃','瀵逛簬','鍏充簬'];
+const STOP = ['在中国','我们','他们','这个','那个','什么','怎么','为什么','如何','可以','已经',
+  '不是','没有','一个','这些','那些','就是','还是','但是','因为','所以','如果','虽然','而且',
+  '以及','或者','不过','然后','现在','今天','昨天','明天','我国','其中','以上','以下',
+  '这么','那么','一些','一下','一直','正在','表示','进行','通过','对于','关于'];
 
 const pName = id => (PLAT[id] ? PLAT[id].name : id);
 const pWeight = id => (PLAT[id] ? PLAT[id].w : 1);
@@ -219,15 +219,15 @@ const esc = s => String(s == null ? '' : s)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 const RISK_LEVELS = {
-  high: ['杩濈邯','杩濇硶','琚煡','钀介┈','瀹℃煡璋冩煡','鎺ュ彈璋冩煡','绔嬫','鍙屽紑','寮€闄ゅ厷绫�',
-         '浜嬫晠','姝讳骸','韬骸','閬囬毦','鍧犱骸','鎾炴','鑾峰垜','鍒ゅ垜','鍒ゅ','璧疯瘔','閫崟','鎷樼暀','鍒戞嫎',
-         '鐏伨','鐖嗙偢','涓瘨','濉屾柟','娉勬紡','姹℃煋'],
-  mid:  ['澶勭綒','缃氭','閫氭姤鎵硅瘎','闂矗','鍏嶈亴','鎾よ亴','杈為€€','瑁佸憳','娆犺柂','鍋滀骇','鐮翠骇','閫€甯�','鍙洖',
-         '鏇濆厜','杩濊','娉勯湶','閫犲亣','娆鸿瘓','渚垫潈','楠�','涓嬫灦','灏佺'],
-  low:  ['璐ㄧ枒','浜夎','鎶曡瘔','涓炬姤','缁存潈','璋ｈ█','杈熻埃','婢勬竻','閬撴瓑','濉屾埧','缈昏溅']
+  high: ['违纪','违法','被查','落马','审查调查','接受调查','立案','双开','开除党籍',
+         '事故','死亡','身亡','遇难','坠亡','撞死','获刑','判刑','判处','起诉','逮捕','拘留','刑拘',
+         '火灾','爆炸','中毒','塌方','泄漏','污染'],
+  mid:  ['处罚','罚款','通报批评','问责','免职','撤职','辞退','裁员','欠薪','停产','破产','退市','召回',
+         '曝光','违规','泄露','造假','欺诈','侵权','骗','下架','封禁'],
+  low:  ['质疑','争议','投诉','举报','维权','谣言','辟谣','澄清','道歉','塌房','翻车']
 };
 const RISK_WORDS = [...RISK_LEVELS.high, ...RISK_LEVELS.mid, ...RISK_LEVELS.low];
-const LV_NAME = { high: '楂�', mid: '涓�', low: '浣�' };
+const LV_NAME = { high: '高', mid: '中', low: '低' };
 
 function riskHits(title){
   return RISK_WORDS.filter(w => String(title).includes(w));
@@ -242,7 +242,7 @@ function riskLevel(title){
 function riskTag(title){
   const h = riskHits(title);
   if (!h.length) return '';
-  return '<span class="flag" title="鍛戒腑璐熼潰绾跨储璇嶏細' + esc(h.join('銆�')) + '">璐熼潰</span>';
+  return '<span class="flag" title="命中负面线索词：' + esc(h.join('、')) + '">负面</span>';
 }
 
 function clean(s){ return String(s || '').replace(/[^\u4e00-\u9fa5A-Za-z0-9]/g, ''); }
@@ -298,7 +298,7 @@ function extractEntities(rows){
 
   const ents = [];
   cand.forEach(([w]) => {
-    if (ents.some(e => e.includes(w))) return;   // 鑱氱被鐢細鍙幓瀛愪覆锛屼繚鐣欏彫鍥�
+    if (ents.some(e => e.includes(w))) return;   // 聚类用：只去子串，保留召回
     ents.push(w);
   });
   return { ents, df };
@@ -348,9 +348,9 @@ function renderMeta(rows, events){
   const t = times.length ? times[0] : '';
   const tm = /^\d{1,2}-\d{2}$/.test(t) ? t.replace('-', ':') : t;
   document.getElementById('meta').innerHTML =
-    '鏁版嵁鏃堕棿 <b>' + esc(tm) + '</b> 路 鏍锋湰 <b>' + rows.length + '</b> 鏉� 路 ' +
-    plats.length + ' 涓钩鍙� 路 鑱氬悎 <b>' + events.length + '</b> 涓簨浠讹紙<b>' + cross.length + '</b> 涓法骞冲彴锛壜� ' +
-    '璐熼潰 <b class="neg-num">' + neg.length + '</b> 涓�';
+    '数据时间 <b>' + esc(tm) + '</b> · 样本 <b>' + rows.length + '</b> 条 · ' +
+    plats.length + ' 个平台 · 聚合 <b>' + events.length + '</b> 个事件（<b>' + cross.length + '</b> 个跨平台）· ' +
+    '负面 <b class="neg-num">' + neg.length + '</b> 个';
 }
 
 function renderNegative(events){
@@ -371,13 +371,13 @@ function renderNegative(events){
   const body = document.getElementById('negBody');
   const hint = document.getElementById('negHint');
   if (!neg.length){
-    body.innerHTML = '<tr><td colspan="7"><div class="empty">鏈鏍锋湰娌℃湁鍛戒腑椋庨櫓璇嶇殑鏉＄洰</div></td></tr>';
-    if (hint) hint.textContent = '鍛戒腑椋庨櫓璇嶇殑浜嬩欢 路 鏈涓� 0 鏉�';
+    body.innerHTML = '<tr><td colspan="7"><div class="empty">本次样本没有命中风险词的条目</div></td></tr>';
+    if (hint) hint.textContent = '命中风险词的事件 · 本次为 0 条';
     return;
   }
   const rows = neg.slice(0, 10);
   const hi = neg.filter(x => x.lv === 'high').length;
-  if (hint) hint.textContent = '鍛戒腑椋庨櫓璇嶇殑浜嬩欢 路 鍏� ' + neg.length + ' 涓紙楂樺嵄 ' + hi + ' 涓級路 鎸夌儹搴︽帓搴�';
+  if (hint) hint.textContent = '命中风险词的事件 · 共 ' + neg.length + ' 个（高危 ' + hi + ' 个）· 按热度排序';
 
   body.innerHTML = rows.map((x, i) => {
     const e = x.ev;
@@ -418,7 +418,7 @@ function renderResonance(events){
   const cross = events.filter(e => e.plats.length >= 2);
   const box = document.getElementById('resList');
   if (!cross.length){
-    box.innerHTML = '<div class="empty">鏈鏍锋湰閲屾病鏈夊嚭鐜拌法骞冲彴閲嶅浜嬩欢</div>';
+    box.innerHTML = '<div class="empty">本次样本里没有出现跨平台重复事件</div>';
     return;
   }
   box.innerHTML = cross.map((e, i) => {
@@ -439,7 +439,7 @@ function renderResonance(events){
         '<span class="res-idx">' + (i + 1) + '</span>' +
         '<a class="res-ttl" href="' + esc(e.url) + '" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">' +
           riskTag(e.title) + esc(e.title) + '</a>' +
-        '<span class="res-meta">' + e.plats.length + ' 骞冲彴 路 ' + e.items.length + ' 鏉� 路 鐑害 ' + Math.round(e.heat) + '</span>' +
+        '<span class="res-meta">' + e.plats.length + ' 平台 · ' + e.items.length + ' 条 · 热度 ' + Math.round(e.heat) + '</span>' +
       '</div>' +
       '<div class="res-pl">' + pills + '</div>' +
     '</div>';
@@ -460,7 +460,7 @@ function renderPlatformBoards(rows){
       '<li title="' + esc(r.title) + '"><a href="' + esc(r.url) + '" target="_blank" rel="noopener">' + esc(r.title) + '</a></li>'
     ).join('');
     return '<div class="pb">' +
-      '<div class="pb-hd">' + esc(pName(p)) + '<span>' + byPlat.get(p).length + ' 鏉�</span></div>' +
+      '<div class="pb-hd">' + esc(pName(p)) + '<span>' + byPlat.get(p).length + ' 条</span></div>' +
       '<ol>' + lis + '</ol>' +
     '</div>';
   }).join('');
@@ -537,7 +537,7 @@ Papa.parse('data.csv?t=' + Date.now(), {
       .map(r => ({ ...r, rank: Number(r.rank) || 99 }));
 
     if (!rows.length){
-      document.getElementById('meta').textContent = 'data.csv 閲屾病鏈夊彲鐢ㄧ殑鏁版嵁琛�';
+      document.getElementById('meta').textContent = 'data.csv 里没有可用的数据行';
       return;
     }
 
@@ -550,7 +550,7 @@ Papa.parse('data.csv?t=' + Date.now(), {
     renderCharts(rows);
   },
   error(err){
-    document.getElementById('meta').textContent = '璇诲彇 data.csv 澶辫触锛�' + err;
+    document.getElementById('meta').textContent = '读取 data.csv 失败：' + err;
   }
 });
 </script>
