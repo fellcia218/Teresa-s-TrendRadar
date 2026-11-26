@@ -63,7 +63,7 @@ def export_to_csv():
     tables = [row[0] for row in cursor.fetchall()]
     target_table = next((t for t in tables if 'news' in t.lower() or 'hot' in t.lower()), tables[0])
             
-    cursor.execute(f"SELECT * FROM {target_table} LIMIT 20") # 先限制20条测试
+    cursor.execute(f"SELECT * FROM {target_table} LIMIT 100") # 先限制20条测试
     rows = cursor.fetchall()
     column_names = [desc[0] for desc in cursor.description]
     
