@@ -135,6 +135,8 @@ jobs:
         run: uv run python -m trendradar
 
       - name: Export to CSV
+        env:
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
         run: python export_data.py
 
       - name: Commit and push data.csv
