@@ -176,6 +176,17 @@
     <div class="pb-grid" id="pbGrid"></div>
   </section>
 
+  <section class="card">
+    <div class="card-hd">
+      <h2>AI 情感研判总览</h2>
+      <span class="hint">基于智谱大模型的上下文因果分析，准确识别隐性负面</span>
+    </div>
+    <div class="charts" style="grid-template-columns: 1fr 1.5fr; padding: 10px 20px 20px;">
+      <div class="chart" id="sentimentChart" style="height: 260px;"></div>
+      <div id="aiReasonList" style="max-height: 260px; overflow-y: auto; padding-left: 20px; border-left: 1px solid var(--line);"></div>
+    </div>
+  </section>
+  
   <section class="charts">
     <div class="card" style="margin-bottom:0">
       <div class="card-hd"><h2>高频热词</h2><span class="hint">跨标题重复出现的实体</span></div>
@@ -548,6 +559,65 @@ Papa.parse('data.csv?t=' + Date.now(), {
     renderResonance(events);
     renderPlatformBoards(rows);
     renderCharts(rows);
+        renderSentiment(rows, events);
+
+    function renderSentiment(rows, events) {
+      // 1. 统计情感数量
+      let pos = 0, neg = 0, neu = 0;
+      rows.forEach(r => {
+        if (r.sentiment === 'positive') pos++;
+        else if (r.sentiment === 'negative') neg++;
+        else neu++;
+      });
+
+      // 2. 画环形图
+      const sc = echarts.init(document.getElementById('sentimentChart'));
+      sc.setOption({
+        tooltip: { trigger: 'item' },
+        legend: { bottom: '0%', left: 'center' },
+        series: [{
+          type: 'pie',
+          radius: ['45%', '70%'],
+          avoidLabelOverlap: false,
+          label: { show: false, position: 'center' },
+          emphasis: { label: { show: true, fontSize: 16, fontWeight: 'bold' } },
+          data: [
+            { value: neg, name: '负面', itemStyle: { color: '#e5484d' } },
+            { value: pos, name: '正面', itemStyle: { color: '#0f9d8f' } },
+            { value: neu, name: '中性', itemStyle: { color: '#94a3b8' } }
+          ]
+        }]
+      });
+
+      // 3. 渲染右侧的 AI 研判理由列表
+      const listBox = document.getElementById('aiReasonList');
+      const reasonsHtml = events.slice(0, 10).map(e => {
+        // 找这个事件里第一条有理由的新闻
+        const itemWithReason = e.items.find(r => r.reason && r.reason !== 'AI请求失败');
+        if (!itemWithReason) return '';
+        
+        const isNeg = itemWithReason.sentiment === 'negative';
+        const color = isNeg ? '#e5484d' : (itemWithReason.sentiment === 'positive' ? '#0f9d8f' : '#94a3b8');
+        const bg = isNeg ? '#fdeaea' : (itemWithReason.sentiment === 'positive' ? '#e6f6f4' : '#f2f5f9');
+        
+        return `
+          <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed var(--line);">
+            <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">
+              <span style="color:${color}; background:${bg}; padding: 2px 6px; border-radius: 4px; font-size:11px; margin-right:6px;">
+                ${itemWithReason.sentiment === 'negative' ? '负面' : (itemWithReason.sentiment === 'positive' ? '正面' : '中性')}
+              </span>
+              ${e.title}
+            </div>
+            <div style="font-size: 12px; color: var(--ink2); line-height: 1.5;">
+              🤖 AI 研判：${itemWithReason.reason}
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      listBox.innerHTML = reasonsHtml || '<div class="empty">暂无 AI 研判信息</div>';
+      window.addEventListener('resize', () => sc.resize());
+    }
   },
   error(err){
     document.getElementById('meta').textContent = '读取 data.csv 失败：' + err;
